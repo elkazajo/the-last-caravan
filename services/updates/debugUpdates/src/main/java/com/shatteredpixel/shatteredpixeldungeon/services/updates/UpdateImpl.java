@@ -21,8 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.services.updates;
 
-import com.watabou.noosa.Game;
-
 public class UpdateImpl {
 
 	private static UpdateService updateChecker = new DebugUpdates();
@@ -32,7 +30,7 @@ public class UpdateImpl {
 	}
 
 	public static boolean supportsUpdates(){
-		return Game.version.contains("INDEV");
+		return false;
 	}
 
 }
