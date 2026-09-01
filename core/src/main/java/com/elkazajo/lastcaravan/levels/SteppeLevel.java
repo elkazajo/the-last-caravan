@@ -2,6 +2,7 @@ package com.elkazajo.lastcaravan.levels;
 
 import com.elkazajo.lastcaravan.levels.painters.SteppePainter;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.elkazajo.lastcaravan.levels.rooms.OpenSteppeRoom;
@@ -19,7 +20,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.elkazajo.lastcaravan.scenes.CaravanScene;
 import com.watabou.noosa.Game;
+import com.elkazajo.lastcaravan.LastCaravanRun;
+import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class SteppeLevel extends RegularLevel {
@@ -179,11 +183,21 @@ public class SteppeLevel extends RegularLevel {
 
                 expeditionReturned = true;
 
+                LastCaravanRun.caravan().addWater(4);
+
+                LastCaravanRun.enterCaravan();
+
                 GLog.p(
                         Messages.get(
                                 "lastcaravan.levels.steppelevel.expedition_complete"));
+
+                try {
+                    Dungeon.saveAll();
+                } catch (IOException e) {
+                    ShatteredPixelDungeon.reportException(e);
+                }
             }
-            
+
             Game.switchScene(CaravanScene.class);
 
             return true;

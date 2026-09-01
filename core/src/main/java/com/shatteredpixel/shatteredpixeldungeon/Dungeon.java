@@ -89,6 +89,8 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import com.watabou.utils.SparseArray;
 
+import com.elkazajo.lastcaravan.LastCaravanRun;
+
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -256,6 +258,8 @@ public class Dungeon {
 		
 		Statistics.reset();
 		Notes.reset();
+
+		LastCaravanRun.reset();
 
 		quickslot.reset();
 		QuickSlotButton.reset();
@@ -641,6 +645,8 @@ public class Dungeon {
 			bundle.put( DEPTH, depth );
 			bundle.put( BRANCH, branch );
 
+			LastCaravanRun.storeInBundle(bundle);
+
 			bundle.put( GOLD, gold );
 			bundle.put( ENERGY, energy );
 
@@ -726,6 +732,8 @@ public class Dungeon {
 	public static void loadGame( int save, boolean fullLoad ) throws IOException {
 		
 		Bundle bundle = FileUtils.bundleFromFile( GamesInProgress.gameFile( save ) );
+
+		LastCaravanRun.restoreFromBundle(bundle);
 
 		initialVersion = bundle.getInt( INIT_VER );
 		version = bundle.getInt( VERSION );
