@@ -54,6 +54,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfRegrowth;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
+import com.elkazajo.lastcaravan.levels.SteppeLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CavesLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel;
@@ -303,6 +304,8 @@ public class Dungeon {
 		if (branch == 0) {
 			switch (depth) {
 				case 1:
+					level = new SteppeLevel();
+    				break;
 				case 2:
 				case 3:
 				case 4:
