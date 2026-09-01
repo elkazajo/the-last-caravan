@@ -4,22 +4,19 @@ import com.elkazajo.lastcaravan.levels.painters.SteppePainter;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.elkazajo.lastcaravan.levels.rooms.OpenSteppeRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.entrance.EntranceRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.exit.ExitRoom;
+import com.elkazajo.lastcaravan.levels.rooms.RoadRoom;
+
+import java.util.ArrayList;
 
 public class SteppeLevel extends RegularLevel {
 
     {
         color1 = 0xC7A96B;
         color2 = 0x8F7545;
-    }
-
-    @Override
-    protected int standardRooms(boolean forceMax) {
-        return 5;
-    }
-
-    @Override
-    protected int specialRooms(boolean forceMax) {
-        return 0;
     }
 
     @Override
@@ -42,5 +39,24 @@ public class SteppeLevel extends RegularLevel {
     @Override
     public String waterTex() {
         return Assets.Environment.WATER_SEWERS;
+    }
+
+    @Override
+    protected ArrayList<Room> initRooms() {
+
+        ArrayList<Room> rooms = new ArrayList<>();
+
+        rooms.add(roomEntrance = EntranceRoom.createEntrance());
+
+        rooms.add(new OpenSteppeRoom());
+        rooms.add(new OpenSteppeRoom());
+        rooms.add(new OpenSteppeRoom());
+
+        rooms.add(new RoadRoom());
+        rooms.add(new RoadRoom());
+
+        rooms.add(roomExit = ExitRoom.createExit());
+
+        return rooms;
     }
 }
