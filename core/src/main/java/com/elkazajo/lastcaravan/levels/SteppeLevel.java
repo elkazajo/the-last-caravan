@@ -11,6 +11,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.exit.ExitR
 import com.elkazajo.lastcaravan.levels.rooms.RoadRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LineBuilder;
+import com.elkazajo.lastcaravan.levels.rooms.FarmRoom;
 
 import java.util.ArrayList;
 
@@ -52,7 +53,8 @@ public class SteppeLevel extends RegularLevel {
 
         rooms.add(new OpenSteppeRoom());
         rooms.add(new OpenSteppeRoom());
-        rooms.add(new OpenSteppeRoom());
+
+        rooms.add(new FarmRoom());
 
         rooms.add(new RoadRoom());
         rooms.add(new RoadRoom());
