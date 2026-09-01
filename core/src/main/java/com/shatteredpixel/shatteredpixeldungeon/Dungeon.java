@@ -88,6 +88,7 @@ import com.watabou.utils.FileUtils;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import com.watabou.utils.SparseArray;
+import com.elkazajo.lastcaravan.scout.ScoutLoadout;
 
 import com.elkazajo.lastcaravan.LastCaravanRun;
 
@@ -295,7 +296,10 @@ public class Dungeon {
 
 		Badges.reset();
 
-		GamesInProgress.selectedClass.initHero(hero);
+		ScoutLoadout.init(
+				hero,
+				GamesInProgress.selectedClass);
+
 	}
 
 	public static boolean isChallenged(int mask) {
