@@ -10,7 +10,12 @@ public class OpenSteppeRoom extends StandardRoom {
     @Override
     public float[] sizeCatProbs() {
         // Treat this as a large/giant gameplay area.
-        return new float[]{0f, 0f, 1f};
+        return new float[] { 0f, 0f, 1f };
+    }
+    
+    @Override
+    public int sizeFactor() {
+        return 1;
     }
 
     @Override

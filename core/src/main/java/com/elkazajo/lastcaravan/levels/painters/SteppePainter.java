@@ -6,6 +6,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.RegularPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.watabou.utils.Rect;
+import com.elkazajo.lastcaravan.levels.rooms.RoadRoom;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -39,9 +40,14 @@ public class SteppePainter extends RegularPainter {
 
                 // Outdoor areas should not look like rooms connected by doors.
                 door.type = Room.Door.Type.EMPTY;
-                Painter.set(level, door, Terrain.EMPTY);
 
-                widenConnection(level, room, other, door);
+                int terrain = room instanceof RoadRoom || other instanceof RoadRoom
+                        ? Terrain.EMPTY_SP
+                        : Terrain.EMPTY;
+
+                Painter.set(level, door, terrain);
+
+                widenConnection(level, room, other, door, terrain);
             }
         }
     }
@@ -50,8 +56,8 @@ public class SteppePainter extends RegularPainter {
             Level level,
             Room first,
             Room second,
-            Room.Door door
-    ) {
+            Room.Door door,
+            int terrain) {
 
         Rect intersection = first.intersect(second);
 
@@ -62,17 +68,17 @@ public class SteppePainter extends RegularPainter {
             int maxY = Math.min(intersection.bottom - 1, door.y + 1);
 
             for (int y = minY; y <= maxY; y++) {
-                Painter.set(level, door.x, y, Terrain.EMPTY);
+                Painter.set(level, door.x, y, terrain);
             }
 
-        // Rooms touch along a horizontal edge.
+            // Rooms touch along a horizontal edge.
         } else if (intersection.height() == 0) {
 
             int minX = Math.max(intersection.left + 1, door.x - 1);
             int maxX = Math.min(intersection.right - 1, door.x + 1);
 
             for (int x = minX; x <= maxX; x++) {
-                Painter.set(level, x, door.y, Terrain.EMPTY);
+                Painter.set(level, x, door.y, terrain);
             }
         }
     }

@@ -9,6 +9,8 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.entrance.EntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.exit.ExitRoom;
 import com.elkazajo.lastcaravan.levels.rooms.RoadRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
+import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LineBuilder;
 
 import java.util.ArrayList;
 
@@ -58,5 +60,39 @@ public class SteppeLevel extends RegularLevel {
         rooms.add(roomExit = ExitRoom.createExit());
 
         return rooms;
+    }
+
+    @Override
+    protected Builder builder() {
+
+        LineBuilder builder = new LineBuilder();
+
+        // All LAST CARAVAN areas should be part of the expedition route.
+        builder.setPathLength(
+                1f,
+                new float[] { 1 });
+
+        // Do not inject random SPD connection rooms.
+        builder.setTunnelLength(
+                new float[] { 1 },
+                new float[] { 1 });
+
+        // The route can bend rather than being perfectly straight.
+        builder.setPathVariance(55f);
+
+        // Occasionally connect areas which happen to touch.
+        builder.setExtraConnectionChance(0.10f);
+
+        return builder;
+    }
+
+    @Override
+    protected void createMobs() {
+        // Enemies are temporarily disabled while testing the Steppe prototype.
+    }
+
+    @Override
+    public int mobLimit() {
+        return 0;
     }
 }
