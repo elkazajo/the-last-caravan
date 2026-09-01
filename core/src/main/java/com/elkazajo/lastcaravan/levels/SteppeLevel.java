@@ -11,7 +11,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.entrance.E
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.exit.ExitRoom;
 import com.elkazajo.lastcaravan.levels.rooms.RoadRoom;
 import com.elkazajo.lastcaravan.levels.rooms.SteppeEntranceRoom;
-import com.elkazajo.lastcaravan.levels.rooms.SteppeExitRoom;
+import com.elkazajo.lastcaravan.levels.rooms.RouteEndRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LineBuilder;
 import com.elkazajo.lastcaravan.levels.rooms.FarmRoom;
@@ -25,8 +25,6 @@ import com.watabou.noosa.Game;
 import com.elkazajo.lastcaravan.LastCaravanRun;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.elkazajo.lastcaravan.items.WaterSupplyCache;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.entrance.EntranceRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.exit.ExitRoom;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -85,7 +83,7 @@ public class SteppeLevel extends RegularLevel {
         rooms.add(new RoadRoom());
 
         rooms.add(
-                roomExit = new SteppeExitRoom());
+                roomExit = new RouteEndRoom());
 
         return rooms;
     }

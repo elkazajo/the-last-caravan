@@ -2,13 +2,18 @@ package com.elkazajo.lastcaravan.levels.rooms;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
-import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.exit.ExitRoom;
 import com.watabou.utils.Point;
 
-public class SteppeExitRoom extends ExitRoom {
+/**
+ * Technical end point used by the SPD LineBuilder.
+ *
+ * It is intentionally not a real dungeon exit:
+ * there is no staircase and no LevelTransition.
+ */
+public class RouteEndRoom extends ExitRoom {
 
     @Override
     public int minWidth() {
@@ -60,23 +65,17 @@ public class SteppeExitRoom extends ExitRoom {
             door.set(Door.Type.EMPTY);
         }
 
-        Point end = center();
+        // Temporary visual landmark at the far end of the route.
+        // Later this can become a lookout, abandoned vehicle, signpost, etc.
+        Point marker = center();
 
-        int exit =
-                level.pointToCell(end);
-
-        Painter.set(
+        Painter.fill(
                 level,
-                exit,
-                Terrain.EXIT
-        );
-
-        level.transitions.add(
-                new LevelTransition(
-                        level,
-                        exit,
-                        LevelTransition.Type.REGULAR_EXIT
-                )
+                marker.x - 1,
+                marker.y - 1,
+                3,
+                3,
+                Terrain.EMPTY_SP
         );
     }
 
