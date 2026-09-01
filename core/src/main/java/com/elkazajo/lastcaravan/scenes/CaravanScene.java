@@ -10,6 +10,11 @@ import com.watabou.noosa.Camera;
 import com.watabou.utils.RectF;
 import com.elkazajo.lastcaravan.LastCaravanRun;
 import com.elkazajo.lastcaravan.caravan.CaravanState;
+import com.elkazajo.lastcaravan.LastCaravanRun;
+import com.shatteredpixel.shatteredpixeldungeon.Chrome;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
+import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
+import com.watabou.noosa.Game;
 
 public class CaravanScene extends PixelScene {
 
@@ -47,18 +52,48 @@ public class CaravanScene extends PixelScene {
 
         CaravanState caravan = LastCaravanRun.caravan();
 
-        RenderedTextBlock summary =
-        PixelScene.renderTextBlock(
+        RenderedTextBlock summary = PixelScene.renderTextBlock(
                 Messages.get(
                         "lastcaravan.scenes.caravanscene.summary",
                         caravan.population(),
                         caravan.food(),
                         caravan.water(),
                         caravan.medicine(),
-                        caravan.morale()
-                ),
-                8
-        );
+                        caravan.morale()),
+                8);
+
+        StyledButton nextExpedition = new StyledButton(
+                Chrome.Type.GREY_BUTTON_TR,
+                Messages.get(
+                        "lastcaravan.scenes.caravanscene.next_expedition")) {
+
+            @Override
+            protected void onClick() {
+
+                enable(false);
+
+                LastCaravanRun.beginNextExpedition();
+
+                InterlevelScene.mode = InterlevelScene.Mode.RESET;
+
+                Game.switchScene(
+                        InterlevelScene.class);
+            }
+        };
+
+        float buttonWidth = Math.min(
+                150,
+                usableWidth - 20);
+
+        nextExpedition.setRect(
+                insets.left
+                        + (usableWidth - buttonWidth) / 2f,
+                summary.bottom() + 16,
+                buttonWidth,
+                22);
+
+        align(nextExpedition);
+        add(nextExpedition);
 
         summary.maxWidth(textWidth);
 

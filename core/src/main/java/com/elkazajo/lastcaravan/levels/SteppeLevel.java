@@ -22,6 +22,7 @@ import com.elkazajo.lastcaravan.scenes.CaravanScene;
 import com.watabou.noosa.Game;
 import com.elkazajo.lastcaravan.LastCaravanRun;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.elkazajo.lastcaravan.items.WaterSupplyCache;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -179,9 +180,24 @@ public class SteppeLevel extends RegularLevel {
                 return false;
             }
 
+            WaterSupplyCache recoveredWater = Dungeon.hero.belongings.getItem(
+                    WaterSupplyCache.class);
+
+            if (recoveredWater == null) {
+
+                GLog.w(
+                        Messages.get(
+                                "lastcaravan.levels.steppelevel.return_missing_water"));
+
+                return false;
+            }
+
             if (!expeditionReturned) {
 
                 expeditionReturned = true;
+
+                recoveredWater.detachAll(
+                        Dungeon.hero.belongings.backpack);
 
                 LastCaravanRun.caravan().addWater(4);
 
