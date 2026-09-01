@@ -44,39 +44,41 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.VaultLevel;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.utils.Random;
+import com.elkazajo.lastcaravan.levels.SteppeLevel;
 
 public class HighGrass {
-	
-	//prevents items dropped from grass, from trampling that same grass.
-	//yes this is a bit ugly, oh well.
+
+	// prevents items dropped from grass, from trampling that same grass.
+	// yes this is a bit ugly, oh well.
 	private static boolean freezeTrample = false;
 
-	public static void trample( Level level, int pos ) {
-		
-		if (freezeTrample) return;
-		
+	public static void trample(Level level, int pos) {
+
+		if (freezeTrample)
+			return;
+
 		Char ch = Actor.findChar(pos);
-		
-		if (level.map[pos] == Terrain.FURROWED_GRASS){
-			if (ch instanceof Hero && ((Hero) ch).heroClass == HeroClass.HUNTRESS){
-				//Do nothing
+
+		if (level.map[pos] == Terrain.FURROWED_GRASS) {
+			if (ch instanceof Hero && ((Hero) ch).heroClass == HeroClass.HUNTRESS) {
+				// Do nothing
 				freezeTrample = true;
 			} else {
 				Level.set(pos, Terrain.GRASS);
 			}
-			
+
 		} else {
-			if (ch instanceof Hero && ((Hero) ch).heroClass == HeroClass.HUNTRESS){
+			if (ch instanceof Hero && ((Hero) ch).heroClass == HeroClass.HUNTRESS) {
 				Level.set(pos, Terrain.FURROWED_GRASS);
 				freezeTrample = true;
 			} else {
 				Level.set(pos, Terrain.GRASS);
 			}
-			
+
 			int naturalismLevel = 0;
-			
+
 			if (ch != null) {
-				SandalsOfNature.Naturalism naturalism = ch.buff( SandalsOfNature.Naturalism.class );
+				SandalsOfNature.Naturalism naturalism = ch.buff(SandalsOfNature.Naturalism.class);
 				if (naturalism != null) {
 					if (!naturalism.isCursed()) {
 						naturalismLevel = naturalism.itemLevel() + 1;
@@ -86,9 +88,11 @@ public class HighGrass {
 					}
 				}
 
-				//berries try to drop on floors 2/3/4/6/7/8, to a max of 4/6
-				if (ch instanceof Hero && ((Hero) ch).hasTalent(Talent.NATURES_BOUNTY)){
-					int berriesAvailable = 2 + 2*((Hero) ch).pointsInTalent(Talent.NATURES_BOUNTY);
+				// berries try to drop on floors 2/3/4/6/7/8, to a max of 4/6
+				if (!(level instanceof SteppeLevel)
+						&& ch instanceof Hero
+						&& ((Hero) ch).hasTalent(Talent.NATURES_BOUNTY)) {
+					int berriesAvailable = 2 + 2 * ((Hero) ch).pointsInTalent(Talent.NATURES_BOUNTY);
 
 					Talent.NatureBerriesDropped dropped = Buff.affect(ch, Talent.NatureBerriesDropped.class);
 					berriesAvailable -= dropped.count();
@@ -98,11 +102,14 @@ public class HighGrass {
 						targetFloor -= berriesAvailable;
 						targetFloor += (targetFloor >= 5) ? 3 : 2;
 
-						//If we're behind: 1/10, if we're on page: 1/30, if we're ahead: 1/90
+						// If we're behind: 1/10, if we're on page: 1/30, if we're ahead: 1/90
 						boolean droppingBerry = false;
-						if (Dungeon.depth > targetFloor) droppingBerry = Random.Int(10) == 0;
-						else if (Dungeon.depth == targetFloor) droppingBerry = Random.Int(30) == 0;
-						else if (Dungeon.depth < targetFloor) droppingBerry = Random.Int(90) == 0;
+						if (Dungeon.depth > targetFloor)
+							droppingBerry = Random.Int(10) == 0;
+						else if (Dungeon.depth == targetFloor)
+							droppingBerry = Random.Int(30) == 0;
+						else if (Dungeon.depth < targetFloor)
+							droppingBerry = Random.Int(90) == 0;
 
 						if (droppingBerry) {
 							dropped.countUp(1);
@@ -113,21 +120,25 @@ public class HighGrass {
 				}
 			}
 
-			//grass gives 1/3 the normal amount of loot in fungi level
+			// grass gives 1/3 the normal amount of loot in fungi level
 			if (Dungeon.level instanceof MiningLevel
 					&& Blacksmith.Quest.Type() == Blacksmith.Quest.FUNGI
-					&& Random.Int(3) != 0){
+					&& Random.Int(3) != 0) {
 				naturalismLevel = -1;
 			}
 
-			//grass gives no loot in vault tester area
-			if (Dungeon.level instanceof VaultLevel){
+			// grass gives no loot in vault tester area
+			if (Dungeon.level instanceof VaultLevel) {
 				naturalismLevel = -1;
 			}
-			
+
+			if (level instanceof SteppeLevel) {
+				naturalismLevel = -1;
+			}
+
 			if (naturalismLevel >= 0) {
 				// Seed, scales from 1/25 to 1/9
-				float lootChance = 1/(25f - naturalismLevel*4f);
+				float lootChance = 1 / (25f - naturalismLevel * 4f);
 
 				// absolute max drop rate is ~1/6.5 with footwear of nature, ~1/18 without
 				lootChance *= PetrifiedSeed.grassLootMultiplier();
@@ -139,12 +150,12 @@ public class HighGrass {
 						level.drop(Generator.random(Generator.Category.SEED), pos).sprite.drop();
 					}
 				}
-				
-				// Dew, scales from 1/6 to 1/4
-				lootChance = 1/(6f -naturalismLevel/2f);
 
-				//grassy levels spawn half as much dew
-				if (Dungeon.level != null && Dungeon.level.feeling == Level.Feeling.GRASS){
+				// Dew, scales from 1/6 to 1/4
+				lootChance = 1 / (6f - naturalismLevel / 2f);
+
+				// grassy levels spawn half as much dew
+				if (Dungeon.level != null && Dungeon.level.feeling == Level.Feeling.GRASS) {
 					lootChance /= 2;
 				}
 
@@ -156,16 +167,17 @@ public class HighGrass {
 			if (ch != null) {
 				Camouflage.activate(ch, ch.glyphLevel(Camouflage.class));
 			}
-			
+
 		}
-		
+
 		freezeTrample = false;
-		
+
 		if (ShatteredPixelDungeon.scene() instanceof GameScene) {
 			GameScene.updateMap(pos);
-			
+
 			CellEmitter.get(pos).burst(LeafParticle.LEVEL_SPECIFIC, 4);
-			if (Dungeon.level.heroFOV[pos]) Dungeon.observe();
+			if (Dungeon.level.heroFOV[pos])
+				Dungeon.observe();
 		}
 	}
 }

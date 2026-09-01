@@ -10,6 +10,8 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.entrance.EntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.exit.ExitRoom;
 import com.elkazajo.lastcaravan.levels.rooms.RoadRoom;
+import com.elkazajo.lastcaravan.levels.rooms.SteppeEntranceRoom;
+import com.elkazajo.lastcaravan.levels.rooms.SteppeExitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LineBuilder;
 import com.elkazajo.lastcaravan.levels.rooms.FarmRoom;
@@ -23,6 +25,8 @@ import com.watabou.noosa.Game;
 import com.elkazajo.lastcaravan.LastCaravanRun;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.elkazajo.lastcaravan.items.WaterSupplyCache;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.entrance.EntranceRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.exit.ExitRoom;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -69,7 +73,8 @@ public class SteppeLevel extends RegularLevel {
 
         ArrayList<Room> rooms = new ArrayList<>();
 
-        rooms.add(roomEntrance = EntranceRoom.createEntrance());
+        rooms.add(
+                roomEntrance = new SteppeEntranceRoom());
 
         rooms.add(new OpenSteppeRoom());
         rooms.add(new OpenSteppeRoom());
@@ -79,7 +84,8 @@ public class SteppeLevel extends RegularLevel {
         rooms.add(new RoadRoom());
         rooms.add(new RoadRoom());
 
-        rooms.add(roomExit = ExitRoom.createExit());
+        rooms.add(
+                roomExit = new SteppeExitRoom());
 
         return rooms;
     }
@@ -220,6 +226,12 @@ public class SteppeLevel extends RegularLevel {
         }
 
         return super.activateTransition(hero, transition);
+    }
+
+    @Override
+    protected void createItems() {
+        // Standard Shattered Pixel Dungeon loot is intentionally disabled.
+        // LAST CARAVAN items are spawned explicitly by its own rooms and systems.
     }
 
     @Override
