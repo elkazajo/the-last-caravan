@@ -15,6 +15,10 @@ import com.elkazajo.lastcaravan.levels.rooms.FarmRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
+import com.elkazajo.lastcaravan.scenes.CaravanScene;
+import com.watabou.noosa.Game;
 
 import java.util.ArrayList;
 
@@ -23,6 +27,10 @@ public class SteppeLevel extends RegularLevel {
     private static final String WATER_OBJECTIVE_COMPLETED = "lc_water_objective_completed";
 
     private boolean waterObjectiveCompleted = false;
+
+    private static final String EXPEDITION_RETURNED = "lc_expedition_returned";
+
+    private boolean expeditionReturned = false;
 
     {
         color1 = 0xC7A96B;
@@ -110,6 +118,9 @@ public class SteppeLevel extends RegularLevel {
         GLog.p(
                 Messages.get(
                         "lastcaravan.levels.steppelevel.objective_complete"));
+        GLog.i(
+                Messages.get(
+                        "lastcaravan.levels.steppelevel.return_unlocked"));
     }
 
     @Override
@@ -119,6 +130,9 @@ public class SteppeLevel extends RegularLevel {
         bundle.put(
                 WATER_OBJECTIVE_COMPLETED,
                 waterObjectiveCompleted);
+        bundle.put(
+                EXPEDITION_RETURNED,
+                expeditionReturned);
     }
 
     @Override
@@ -126,6 +140,56 @@ public class SteppeLevel extends RegularLevel {
         super.restoreFromBundle(bundle);
 
         waterObjectiveCompleted = bundle.getBoolean(WATER_OBJECTIVE_COMPLETED);
+        expeditionReturned = bundle.getBoolean(EXPEDITION_RETURNED);
+    }
+
+    public boolean isExpeditionReturned() {
+        return expeditionReturned;
+    }
+
+    @Override
+    public boolean activateTransition(
+            Hero hero,
+            LevelTransition transition) {
+
+        // LAST CARAVAN expedition does not continue to SPD floor 2.
+        if (transition.type == LevelTransition.Type.REGULAR_EXIT) {
+
+            GLog.w(
+                    Messages.get(
+                            "lastcaravan.levels.steppelevel.no_descent"));
+
+            return false;
+        }
+
+        // Depth 1 entrance in SPD is a SURFACE transition.
+        // We reuse it as the return point to the caravan.
+        if (transition.type == LevelTransition.Type.SURFACE) {
+
+            if (!waterObjectiveCompleted) {
+
+                GLog.w(
+                        Messages.get(
+                                "lastcaravan.levels.steppelevel.return_locked"));
+
+                return false;
+            }
+
+            if (!expeditionReturned) {
+
+                expeditionReturned = true;
+
+                GLog.p(
+                        Messages.get(
+                                "lastcaravan.levels.steppelevel.expedition_complete"));
+            }
+            
+            Game.switchScene(CaravanScene.class);
+
+            return true;
+        }
+
+        return super.activateTransition(hero, transition);
     }
 
     @Override
