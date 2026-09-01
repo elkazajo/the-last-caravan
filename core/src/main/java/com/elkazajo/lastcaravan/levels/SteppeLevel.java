@@ -12,10 +12,17 @@ import com.elkazajo.lastcaravan.levels.rooms.RoadRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LineBuilder;
 import com.elkazajo.lastcaravan.levels.rooms.FarmRoom;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
 
 public class SteppeLevel extends RegularLevel {
+
+    private static final String WATER_OBJECTIVE_COMPLETED = "lc_water_objective_completed";
+
+    private boolean waterObjectiveCompleted = false;
 
     {
         color1 = 0xC7A96B;
@@ -86,6 +93,39 @@ public class SteppeLevel extends RegularLevel {
         builder.setExtraConnectionChance(0.10f);
 
         return builder;
+    }
+
+    public boolean isWaterObjectiveCompleted() {
+        return waterObjectiveCompleted;
+    }
+
+    public void completeWaterObjective() {
+
+        if (waterObjectiveCompleted) {
+            return;
+        }
+
+        waterObjectiveCompleted = true;
+
+        GLog.p(
+                Messages.get(
+                        "lastcaravan.levels.steppelevel.objective_complete"));
+    }
+
+    @Override
+    public void storeInBundle(Bundle bundle) {
+        super.storeInBundle(bundle);
+
+        bundle.put(
+                WATER_OBJECTIVE_COMPLETED,
+                waterObjectiveCompleted);
+    }
+
+    @Override
+    public void restoreFromBundle(Bundle bundle) {
+        super.restoreFromBundle(bundle);
+
+        waterObjectiveCompleted = bundle.getBoolean(WATER_OBJECTIVE_COMPLETED);
     }
 
     @Override

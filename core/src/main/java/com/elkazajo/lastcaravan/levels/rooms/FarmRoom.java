@@ -6,6 +6,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.watabou.utils.Point;
+import com.elkazajo.lastcaravan.items.WaterSupplyCache;
 
 public class FarmRoom extends StandardRoom {
 
@@ -56,6 +57,8 @@ public class FarmRoom extends StandardRoom {
 
         paintMainPaths(level, center);
 
+        paintWell(level);
+
         for (Door door : connected.values()) {
             door.set(Door.Type.EMPTY);
         }
@@ -80,8 +83,7 @@ public class FarmRoom extends StandardRoom {
                     y,
                     fieldWidth,
                     1,
-                    Terrain.FURROWED_GRASS
-            );
+                    Terrain.FURROWED_GRASS);
         }
     }
 
@@ -101,8 +103,7 @@ public class FarmRoom extends StandardRoom {
                     storageTop,
                     storageWidth,
                     storageHeight,
-                    Terrain.EMPTY_SP
-            );
+                    Terrain.EMPTY_SP);
         }
     }
 
@@ -115,8 +116,7 @@ public class FarmRoom extends StandardRoom {
                 top + 1,
                 3,
                 height() - 2,
-                Terrain.EMPTY
-        );
+                Terrain.EMPTY);
 
         // West-east path.
         Painter.fill(
@@ -125,8 +125,7 @@ public class FarmRoom extends StandardRoom {
                 center.y - 1,
                 width() - 2,
                 3,
-                Terrain.EMPTY
-        );
+                Terrain.EMPTY);
     }
 
     @Override
@@ -137,5 +136,27 @@ public class FarmRoom extends StandardRoom {
     @Override
     public boolean canPlaceWater(Point point) {
         return false;
+    }
+
+    private void paintWell(Level level) {
+
+        Point well = new Point(
+                right - 3,
+                bottom - 3);
+
+        // EMPTY_WELL is only a temporary visual representation.
+        // We deliberately do not use SPD's magical WELL mechanics.
+        Painter.set(
+                level,
+                well,
+                Terrain.EMPTY_WELL);
+
+        Point supplies = new Point(
+                well.x - 1,
+                well.y);
+
+        level.drop(
+                new WaterSupplyCache(),
+                level.pointToCell(supplies));
     }
 }
