@@ -914,6 +914,9 @@ public class Dungeon {
 
 		Hero.preview(info, bundle.getBundle(HERO));
 		Statistics.preview(info, bundle);
+		LastCaravanRun.previewSaveInfo(
+				info,
+				bundle);
 	}
 
 	public static void fail(Object cause) {

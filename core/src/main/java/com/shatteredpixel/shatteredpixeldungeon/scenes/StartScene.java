@@ -152,8 +152,7 @@ public class StartScene extends PixelScene {
 		} else {
 			btnSort.setRect(slotLeft, yPos, btnSort.reqWidth() + 4, 12);
 		}
-		if (games.size() >= 2)
-			add(btnSort);
+		// LAST CARAVAN does not expose SPD level-based save sorting.
 
 		fadeIn();
 
@@ -215,11 +214,9 @@ public class StartScene extends PixelScene {
 				}
 			} else {
 
-				if (info.subClass != HeroSubClass.NONE) {
-					name.text(Messages.titleCase(info.subClass.title()));
-				} else {
-					name.text(Messages.titleCase(info.heroClass.title()));
-				}
+				name.text(
+						Messages.get(
+								"lastcaravan.scenes.startscene.scout"));
 
 				if (hero == null) {
 					hero = new Image(info.heroClass.spritesheet(), 0, 15 * info.armorTier, 12, 15);
@@ -234,6 +231,10 @@ public class StartScene extends PixelScene {
 					add(classIcon);
 					level = new BitmapText(PixelScene.pixelFont);
 					add(level);
+					steps.visible = false;
+					depth.visible = false;
+					classIcon.visible = false;
+					level.visible = false;
 				} else {
 					hero.copy(new Image(info.heroClass.spritesheet(), 0, 15 * info.armorTier, 12, 15));
 
