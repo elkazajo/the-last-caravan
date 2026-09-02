@@ -1,27 +1,39 @@
-# Shattered Pixel Dungeon
+# LAST CARAVAN — Codex handoff package
 
-[Shattered Pixel Dungeon](https://shatteredpixel.com/shatteredpd/) is an open-source traditional roguelike dungeon crawler with randomized levels and enemies, and hundreds of items to collect and use. It's based on the [source code of Pixel Dungeon](https://github.com/00-Evan/pixel-dungeon-gradle), by [Watabou](https://watabou.itch.io/).
+Copy this package into the root of the local repository.
 
-Shattered Pixel Dungeon currently compiles for Android, iOS, and Desktop platforms. You can find official releases of the game on:
+Recommended resulting structure:
 
-[![Get it on Google Play](https://shatteredpixel.com/assets/images/badges/gplay.png)](https://play.google.com/store/apps/details?id=com.shatteredpixel.shatteredpixeldungeon)
-[![Download on the App Store](https://shatteredpixel.com/assets/images/badges/appstore.png)](https://apps.apple.com/app/shattered-pixel-dungeon/id1563121109)
-[![Steam](https://shatteredpixel.com/assets/images/badges/steam.png)](https://store.steampowered.com/app/1769170/Shattered_Pixel_Dungeon/)<br>
-[![GOG.com](https://shatteredpixel.com/assets/images/badges/gog.png)](https://www.gog.com/game/shattered_pixel_dungeon)
-[![Itch.io](https://shatteredpixel.com/assets/images/badges/itch.png)](https://shattered-pixel.itch.io/shattered-pixel-dungeon)
-[![Github Releases](https://shatteredpixel.com/assets/images/badges/github.png)](https://github.com/00-Evan/shattered-pixel-dungeon/releases)
+```text
+the-last-caravan/
+├── AGENTS.md
+├── LAST_CARAVAN_MASTER_CONTEXT.md
+└── docs/
+    ├── CURRENT_STATE.md
+    ├── GAME_DESIGN_DOCUMENT.md
+    ├── TECHNICAL_ARCHITECTURE.md
+    ├── DECISIONS.md
+    ├── ROADMAP.md
+    ├── CODEX_WORKFLOW.md
+    ├── QA_CHECKLIST.md
+    └── CHATGPT_RESUME_PROMPT.md
+```
 
-If you like this game, please consider [supporting me on Patreon](https://www.patreon.com/ShatteredPixel)!
+Start Codex by asking it to:
+1. read `AGENTS.md`;
+2. read `docs/CURRENT_STATE.md`;
+3. inspect the local worktree;
+4. run the desktop build;
+5. continue the current LC-005 milestone only.
 
-There is an official blog for this project at [ShatteredPixel.com](https://www.shatteredpixel.com/blog/).
+Suggested first prompt to Codex:
 
-The game also has a translation project hosted on [Transifex](https://explore.transifex.com/shattered-pixel/shattered-pixel-dungeon/).
+> Прочитай AGENTS.md, docs/CURRENT_STATE.md, docs/ROADMAP.md и docs/CODEX_WORKFLOW.md. Затем проверь текущий локальный worktree и сборку. GitHub master может отставать от локальной версии. Продолжай с текущего LC-005, не перескакивая вперед. Сначала дай краткую сводку фактического состояния и следующий маленький шаг. Git я делаю через VS Code UI, поэтому не выполняй git commit/push и не давай git-команды.
 
-Note that **this repository does not accept pull requests!** The code here is provided in hopes that others may find it useful for their own projects, not to allow community contribution. Issue reports of all kinds (bug reports, feature requests, etc.) are welcome.
+When Codex approaches its context limit, ask it to write/update:
+`docs/CODEX_LAST_SESSION.md`
 
-If you'd like to work with the code, you can find the following guides in `/docs`:
-- [Compiling for Android.](docs/getting-started-android.md)
-    - **[If you plan to distribute on Google Play please read the end of this guide.](docs/getting-started-android.md#distributing-your-app)**
-- [Compiling for desktop platforms.](docs/getting-started-desktop.md)
-- [Compiling for iOS.](docs/getting-started-ios.md)
-- [Recommended changes for making your own version.](docs/recommended-changes.md)
+Use the template/instructions in:
+`docs/CHATGPT_RESUME_PROMPT.md`
+
+Then return to ChatGPT and attach that summary plus the handoff docs.

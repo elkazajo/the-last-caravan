@@ -3,6 +3,7 @@ package com.elkazajo.lastcaravan.levels;
 import com.elkazajo.lastcaravan.levels.painters.SteppePainter;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.elkazajo.lastcaravan.levels.rooms.OpenSteppeRoom;
@@ -14,6 +15,7 @@ import com.elkazajo.lastcaravan.levels.rooms.SteppeEntranceRoom;
 import com.elkazajo.lastcaravan.levels.rooms.RouteEndRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LineBuilder;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
 import com.elkazajo.lastcaravan.levels.rooms.FarmRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -25,6 +27,8 @@ import com.watabou.noosa.Game;
 import com.elkazajo.lastcaravan.LastCaravanRun;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.elkazajo.lastcaravan.items.WaterSupplyCache;
+import com.elkazajo.lastcaravan.actors.mobs.Jackal;
+import com.watabou.utils.Random;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,6 +42,8 @@ public class SteppeLevel extends RegularLevel {
     private static final String EXPEDITION_RETURNED = "lc_expedition_returned";
 
     private boolean expeditionReturned = false;
+
+    private FarmRoom farmRoom;
 
     {
         color1 = 0xC7A96B;
@@ -77,7 +83,7 @@ public class SteppeLevel extends RegularLevel {
         rooms.add(new OpenSteppeRoom());
         rooms.add(new OpenSteppeRoom());
 
-        rooms.add(new FarmRoom());
+        rooms.add(farmRoom = new FarmRoom());
 
         rooms.add(new RoadRoom());
         rooms.add(new RoadRoom());
@@ -234,11 +240,58 @@ public class SteppeLevel extends RegularLevel {
 
     @Override
     protected void createMobs() {
-        // Enemies are temporarily disabled while testing the Steppe prototype.
+
+        if (farmRoom == null) {
+            return;
+        }
+
+        boolean[] entranceFOV = new boolean[length()];
+        int entrance = entrance();
+
+        ShadowCaster.castShadow(
+                entrance % width(),
+                entrance / width(),
+                width(),
+                entranceFOV,
+                losBlocking,
+                8);
+
+        ArrayList<Integer> spawnCells = new ArrayList<>();
+
+        for (int y = farmRoom.top + 1; y < farmRoom.bottom; y++) {
+            for (int x = farmRoom.left + 1; x < farmRoom.right; x++) {
+
+                int cell = x + y * width();
+
+                if (!entranceFOV[cell]
+                        && passable[cell]
+                        && !solid[cell]
+                        && farmRoom.canPlaceCharacter(cellToPoint(cell), this)
+                        && heaps.get(cell) == null
+                        && traps.get(cell) == null
+                        && plants.get(cell) == null) {
+
+                    spawnCells.add(cell);
+                }
+            }
+        }
+
+        if (!spawnCells.isEmpty()) {
+
+            Jackal jackal = new Jackal();
+            jackal.pos = Random.element(spawnCells);
+            mobs.add(jackal);
+        }
+    }
+
+    @Override
+    public Actor addRespawner() {
+        // This authored encounter must not be replaced by random SPD enemies.
+        return null;
     }
 
     @Override
     public int mobLimit() {
-        return 0;
+        return 1;
     }
 }
