@@ -33,6 +33,18 @@ public class ScoutState implements Bundlable {
         return maxWater;
     }
 
+    public int restoreWater(int amount) {
+
+        if (amount <= 0 || water >= maxWater) {
+            return 0;
+        }
+
+        int restored = Math.min(amount, maxWater - water);
+        water += restored;
+
+        return restored;
+    }
+
     public int spendExpeditionTime(float time) {
 
         if (time <= 0f || water <= 0) {
