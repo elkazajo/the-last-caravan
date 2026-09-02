@@ -1,10 +1,14 @@
 package com.elkazajo.lastcaravan.items;
 
+import com.elkazajo.lastcaravan.noise.NoiseSystem;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class ScoutKnife extends MeleeWeapon {
+
+    private static final int ATTACK_NOISE_RADIUS = 0;
 
     {
         image = ItemSpriteSheet.DAGGER;
@@ -20,6 +24,12 @@ public class ScoutKnife extends MeleeWeapon {
     @Override
     public int max(int lvl) {
         return 8 + 2 * lvl;
+    }
+
+    @Override
+    public int proc(Char attacker, Char defender, int damage) {
+        NoiseSystem.emit(attacker.pos, ATTACK_NOISE_RADIUS);
+        return super.proc(attacker, defender, damage);
     }
 
     @Override

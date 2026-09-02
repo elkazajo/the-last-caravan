@@ -1,5 +1,6 @@
 package com.elkazajo.lastcaravan.items;
 
+import com.elkazajo.lastcaravan.noise.NoiseSystem;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -9,6 +10,8 @@ import com.elkazajo.lastcaravan.levels.SteppeLevel;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 
 public class WaterSupplyCache extends Item {
+
+    private static final int PICKUP_NOISE_RADIUS = 8;
 
     {
         // Temporary icon. Later we will replace it with our own canister sprite.
@@ -43,6 +46,12 @@ public class WaterSupplyCache extends Item {
         boolean pickedUp = super.doPickUp(hero, pos);
 
         if (pickedUp) {
+
+            NoiseSystem.emit(pos, PICKUP_NOISE_RADIUS);
+
+            GLog.w(
+                    Messages.get(
+                            "lastcaravan.items.watersupplycache.noise"));
 
             GLog.p(
                     Messages.get(

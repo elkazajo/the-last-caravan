@@ -92,6 +92,29 @@ public class Jackal extends Mob {
         return super.chooseEnemy();
     }
 
+    public void hearNoise(int cell) {
+
+        if ((state == HUNTING && enemySeen)
+                || state == FLEEING
+                || state == PASSIVE) {
+
+            return;
+        }
+
+        if (territoryCenter != -1
+                && Dungeon.level.distance(cell, territoryCenter) > MAX_CHASE_DISTANCE) {
+
+            return;
+        }
+
+        returningToTerritory = false;
+        clearEnemy();
+
+        state = INVESTIGATING;
+        target = cell;
+        alerted = true;
+    }
+
     private class TerritoryWandering extends Mob.Wandering {
 
         @Override
