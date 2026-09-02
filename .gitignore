@@ -18,3 +18,16 @@ local.properties
 #intellij project files
 *.iml
 *.idea
+
+# Local Codex / ChatGPT handoff documents
+/AGENTS.md
+/LAST_CARAVAN_MASTER_CONTEXT.md
+/README.md
+/docs/CHATGPT_RESUME_PROMPT.md
+/docs/CODEX_WORKFLOW.md
+/docs/CURRENT_STATE.md
+/docs/DECISIONS.md
+/docs/GAME_DESIGN_DOCUMENT.md
+/docs/QA_CHECKLIST.md
+/docs/ROADMAP.md
+/docs/TECHNICAL_ARCHITECTURE.md
