@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
+import com.elkazajo.lastcaravan.LastCaravanRun;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
@@ -813,6 +814,7 @@ public class Hero extends Char {
 	@Override
 	public void spendConstant(float time) {
 		super.spendConstant(time);
+		LastCaravanRun.spendScoutTime(time);
 	}
 
 	public void spendAndNextConstant(float time ) {

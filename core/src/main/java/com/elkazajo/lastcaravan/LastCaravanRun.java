@@ -37,6 +37,15 @@ public final class LastCaravanRun {
         return scoutState;
     }
 
+    public static int spendScoutTime(float time) {
+
+        if (phase != Phase.EXPEDITION) {
+            return 0;
+        }
+
+        return scoutState.spendExpeditionTime(time);
+    }
+
     public static void reset() {
         caravanState = new CaravanState();
         scoutState = new ScoutState();
