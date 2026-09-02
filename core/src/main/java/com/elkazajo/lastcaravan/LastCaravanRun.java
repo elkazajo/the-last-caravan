@@ -2,7 +2,9 @@ package com.elkazajo.lastcaravan;
 
 import com.elkazajo.lastcaravan.caravan.CaravanState;
 import com.elkazajo.lastcaravan.scout.ScoutState;
+import com.elkazajo.lastcaravan.scout.ScoutSurvival;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.watabou.utils.Bundle;
 
 public final class LastCaravanRun {
@@ -37,13 +39,13 @@ public final class LastCaravanRun {
         return scoutState;
     }
 
-    public static int spendScoutTime(float time) {
+    public static void spendScoutTime(Hero hero, float time) {
 
         if (phase != Phase.EXPEDITION) {
-            return 0;
+            return;
         }
 
-        return scoutState.spendExpeditionTime(time);
+        ScoutSurvival.spendTime(hero, scoutState, time);
     }
 
     public static void reset() {

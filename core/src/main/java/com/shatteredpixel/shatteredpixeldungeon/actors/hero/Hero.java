@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
 import com.elkazajo.lastcaravan.LastCaravanRun;
+import com.elkazajo.lastcaravan.scout.ScoutSurvival;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
@@ -551,6 +552,8 @@ public class Hero extends Char {
 		if (buff(Scimitar.SwordDance.class) != null){
 			accuracy *= 1.50f;
 		}
+
+		accuracy *= ScoutSurvival.accuracyMultiplier();
 		
 		if (!RingOfForce.fightingUnarmed(this)) {
 			return Math.max(1, Math.round(attackSkill * accuracy * wep.accuracyFactor( this, target )));
@@ -730,6 +733,7 @@ public class Hero extends Char {
 		}
 
 		speed = AscensionChallenge.modifyHeroSpeed(speed);
+		speed *= ScoutSurvival.speedMultiplier();
 		
 		return speed;
 		
@@ -814,7 +818,7 @@ public class Hero extends Char {
 	@Override
 	public void spendConstant(float time) {
 		super.spendConstant(time);
-		LastCaravanRun.spendScoutTime(time);
+		LastCaravanRun.spendScoutTime(this, time);
 	}
 
 	public void spendAndNextConstant(float time ) {
