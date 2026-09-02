@@ -280,6 +280,7 @@ public class SteppeLevel extends RegularLevel {
 
             Jackal jackal = new Jackal();
             jackal.pos = Random.element(spawnCells);
+            jackal.setTerritoryCenter(pointToCell(farmRoom.center()));
             mobs.add(jackal);
         }
     }
