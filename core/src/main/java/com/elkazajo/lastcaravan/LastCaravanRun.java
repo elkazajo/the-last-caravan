@@ -1,15 +1,17 @@
 package com.elkazajo.lastcaravan;
 
 import com.elkazajo.lastcaravan.caravan.CaravanState;
-import com.watabou.utils.Bundle;
+import com.elkazajo.lastcaravan.scout.ScoutState;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.watabou.utils.Bundle;
 
 public final class LastCaravanRun {
 
     private static final String CARAVAN_STATE = "last_caravan_caravan_state";
+    private static final String SCOUT_STATE = "last_caravan_scout_state";
 
     private static CaravanState caravanState = new CaravanState();
+    private static ScoutState scoutState = new ScoutState();
 
     private LastCaravanRun() {
     }
@@ -31,8 +33,13 @@ public final class LastCaravanRun {
         return caravanState;
     }
 
+    public static ScoutState scout() {
+        return scoutState;
+    }
+
     public static void reset() {
         caravanState = new CaravanState();
+        scoutState = new ScoutState();
         phase = Phase.EXPEDITION;
         expeditionNumber = 0;
     }
@@ -41,6 +48,10 @@ public final class LastCaravanRun {
         bundle.put(
                 CARAVAN_STATE,
                 caravanState);
+
+        bundle.put(
+                SCOUT_STATE,
+                scoutState);
 
         bundle.put(
                 RUN_PHASE,
@@ -60,6 +71,16 @@ public final class LastCaravanRun {
         } else {
 
             reset();
+        }
+
+        if (bundle.contains(SCOUT_STATE)) {
+
+            scoutState = (ScoutState) bundle.get(SCOUT_STATE);
+
+        } else {
+
+            // Fallback for saves created before personal water existed.
+            scoutState = new ScoutState();
         }
 
         if (bundle.contains(RUN_PHASE)) {
